@@ -1,0 +1,5 @@
+*.mtl
+*.obj
+!Ifc4_SampleHouse.mtl
+!Ifc4_SampleHouse_0.500000_0.001000_-1.000000.obj
+!Ifc4_SampleHouse.obj
