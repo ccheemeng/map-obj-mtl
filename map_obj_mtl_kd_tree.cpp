@@ -8,14 +8,10 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/IO/polygon_soup_io.h>
 #include <CGAL/K_neighbor_search.h>
-#include <CGAL/Orthogonal_k_neighbor_search.h>
 #include <CGAL/Search_traits_3.h>
 #include <CGAL/Search_traits_adapter.h>
 #include <CGAL/Triangulation_3.h>
 #include <CGAL/barycenter.h>
-
-#include "Vector_3.h"
-#include "read_obj_vertices_faces_materials_3.h"
 
 using K = CGAL::Exact_predicates_inexact_constructions_kernel;
 using Point_3 = K::Point_3;
@@ -30,7 +26,8 @@ using Triangulation_3 = CGAL::Triangulation_3<K>;
 
 int main(int argc, char **argv) {
 
-    // Input
+    // IO
+
     std::string source = argv[1];
     std::string target = argv[2];
     std::string material = "";
@@ -55,21 +52,14 @@ int main(int argc, char **argv) {
         }
     }
 
-    std::vector<Vector_3> vector_3s;
-    std::vector<std::vector<size_t>> source_faces;
-    std::vector<std::string> source_materials;
-    if (!read_obj_vertices_faces_materials_3::
-            read_obj_vertices_faces_materials_3(source, vector_3s, source_faces,
-                                                source_materials) ||
-        source_faces.empty()) {
-        std::cerr << "Invalid source input: " << source << std::endl;
-        return EXIT_FAILURE;
-    }
+    // std::vector<std::string/struct> of materials corresponding to
+    // source_faces
     std::vector<Point_3> source_points;
-    source_points.reserve(vector_3s.size());
-    for (Vector_3 vector_3 : vector_3s) {
-        Point_3 source_point = Point_3(vector_3.x, vector_3.y, vector_3.z);
-        source_points.push_back(source_point);
+    std::vector<std::vector<std::size_t>> source_faces;
+    if (!CGAL::IO::read_polygon_soup(source, source_points, source_faces) ||
+        source_faces.empty()) {
+        std::cout << "Invalid source input: " << source << std::endl;
+        return EXIT_FAILURE;
     }
     std::cout << source << ": " << source_points.size() << " points, "
               << source_faces.size() << " faces " << std::endl;
@@ -78,7 +68,7 @@ int main(int argc, char **argv) {
     std::vector<std::vector<std::size_t>> target_faces;
     if (!CGAL::IO::read_polygon_soup(target, target_points, target_faces) ||
         source_faces.empty()) {
-        std::cerr << "Invalid target input: " << target << std::endl;
+        std::cout << "Invalid target input: " << target << std::endl;
         return EXIT_FAILURE;
     }
     std::cout << target << ": " << target_points.size() << " points, "
@@ -88,18 +78,9 @@ int main(int argc, char **argv) {
 
     std::chrono::steady_clock::time_point start =
         std::chrono::steady_clock::now();
-    std::cout << "Triangulating source mesh..." << std::endl;
-
-    std::vector<std::vector<int>> source_triangles;
-    for (std::vector<std::size_t> source_face : source_faces) {
-        if (source_face.size() == 3) {
-            source_triangles.push_back(std::vector<int>(
-                source_face[0], source_face[1], source_face[2]));
-        } else if (source_face.size() > 3) {
-            std::vector<std::vector<int>> face_triangles;
-            Triangulation_3 triangulation = Triangulation_3()
-        }
-    }
+    std::cout << "Building face barycentres and kd tree of barycentres from "
+                 "source mesh..."
+              << std::endl;
 
     std::vector<Point_3_i> barycentres;
     size_t i = 0;
