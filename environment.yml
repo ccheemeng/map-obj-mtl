@@ -1,4 +1,4 @@
-name: map_obj_mtl
+name: map-obj-mtl
 channels:
   - conda-forge
   - defaults

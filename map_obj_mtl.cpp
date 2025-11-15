@@ -31,27 +31,28 @@ int main(int argc, char **argv) {
     // Input
     std::string source = argv[1];
     std::string target = argv[2];
-    std::string out = "";
+    std::string out = argv[3] ? argv[3] : "";
 
-    static struct option long_options[] = {{"out", required_argument, 0, 'o'},
-                                           {0, 0, 0, 0}};
-    optind = 3;
-    int option_index = 0;
-    for (int i = 0; i < 1000; ++i) {
-        int opt = getopt_long(argc, argv, "o:", long_options, &option_index);
-        if (opt == -1) {
-            break;
-        }
-        switch (opt) {
-        case 'o': {
-            out = optarg;
-        }
-        default: {
-            std::cerr << "?? getopt returned character code " << opt << "??"
-                      << std::endl;
-        }
-        }
-    }
+    // static struct option long_options[] = {{"out", required_argument, 0,
+    // 'o'},
+    //                                        {0, 0, 0, 0}};
+    // optind = 3;
+    // int option_index = 0;
+    // for (int i = 0; i < 1000; ++i) {
+    //     int opt = getopt_long(argc, argv, "o:", long_options, &option_index);
+    //     if (opt == -1) {
+    //         break;
+    //     }
+    //     switch (opt) {
+    //     case 'o': {
+    //         out = optarg;
+    //     }
+    //     default: {
+    //         std::cerr << "?? getopt returned character code " << opt << "??"
+    //                   << std::endl;
+    //     }
+    //     }
+    // }
 
     std::vector<Vector_3<double>> vector_3s;
     std::vector<std::vector<size_t>> source_faces;
