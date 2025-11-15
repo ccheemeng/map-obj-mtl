@@ -1,7 +1,7 @@
 #ifndef READ_OBJ_VERTICES_FACES_MATERIALS_3_H
 #define READ_OBJ_VERTICES_FACES_MATERIALS_3_H
 
-#include <vector>
+#include <filesystem>
 
 #include "Vector_3.h"
 
@@ -20,7 +20,7 @@ std::vector<std::string> split(const std::string &input, const char &delim) {
 }
 
 bool read_obj_vertices_faces_materials_3(
-    const std::string &fname, std::vector<Vector_3> &points,
+    const std::string &fname, std::vector<Vector_3<double>> &points,
     std::vector<std::vector<size_t>> &faces,
     std::vector<std::string> &materials) {
     std::filesystem::path fpath = std::filesystem::path(fname);
@@ -29,12 +29,12 @@ bool read_obj_vertices_faces_materials_3(
         std::cerr << "Unknown input file extension: " << extension << std::endl;
         return false;
     }
-    std::ifstream file = std::ifstream(fpath);
 
     points.clear();
     faces.clear();
     materials.clear();
 
+    std::ifstream file = std::ifstream(fpath);
     std::string material = "";
     std::string line;
     while (std::getline(file, line)) {
@@ -42,13 +42,15 @@ bool read_obj_vertices_faces_materials_3(
         if (parts.empty()) {
             continue;
         }
+
         if (parts[0] == "v") {
             if (parts.size() <= 3) {
                 continue;
             }
-            Vector_3 point = Vector_3(std::stod(parts[1]), std::stod(parts[2]),
-                                      std::stod(parts[3]));
+            Vector_3<double> point = Vector_3<double>(
+                std::stod(parts[1]), std::stod(parts[2]), std::stod(parts[3]));
             points.push_back(point);
+
         } else if (parts[0] == "f") {
             if (parts.size() <= 3) {
                 continue;
@@ -60,10 +62,11 @@ bool read_obj_vertices_faces_materials_3(
                 if (indices.empty()) {
                     continue;
                 }
-                face.push_back(std::stoull(indices[0]));
+                face.push_back(std::stoull(indices[0]) - 1);
             }
             faces.push_back(face);
             materials.push_back(material);
+
         } else if (parts[0] == "usemtl") {
             if (parts.size() <= 1) {
                 continue;
@@ -71,6 +74,7 @@ bool read_obj_vertices_faces_materials_3(
             material = parts[1];
         }
     }
+    file.close();
 
     return true;
 }

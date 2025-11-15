@@ -1,12 +1,12 @@
 #ifndef VECTOR_3_H
 #define VECTOR_3_H
 
-struct Vector_3 {
-    double x;
-    double y;
-    double z;
+template <typename T> struct Vector_3 {
+    T x;
+    T y;
+    T z;
 
-    Vector_3(double x, double y, double z) {
+    Vector_3(T x, T y, T z) {
         this->x = x;
         this->y = y;
         this->z = z;
