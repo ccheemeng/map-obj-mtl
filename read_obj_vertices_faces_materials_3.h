@@ -69,9 +69,12 @@ bool read_obj_vertices_faces_materials_3(
 
         } else if (parts[0] == "usemtl") {
             if (parts.size() <= 1) {
-                continue;
+                material = "";
             }
-            material = parts[1];
+            size_t first_space = line.find_first_of(' ');
+            std::string from_first_space = line.substr(first_space);
+            size_t first_not_space = from_first_space.find_first_not_of(' ');
+            material = from_first_space.substr(first_not_space);
         }
     }
     file.close();

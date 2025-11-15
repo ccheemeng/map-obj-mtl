@@ -176,8 +176,6 @@ int main(int argc, char **argv) {
     std::cout << "Took: " << duration.count() << " s" << std::endl;
 
     // Output
-    std::cout << "Writing to " << out << "..." << std::endl;
-
     std::vector<Vector_3<double>> out_points;
     out_points.reserve(target_points.size());
     for (Point_3 point : target_points) {
@@ -187,6 +185,7 @@ int main(int argc, char **argv) {
     if (out.empty()) {
         out = "out.obj";
     }
+    std::cout << "Writing to " << out << "..." << std::endl;
     if (!write_obj_vertices_faces_materials_3::
             write_obj_vertices_faces_materials_3(out, out_points, target_faces,
                                                  target_materials)) {
