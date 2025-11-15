@@ -1,7 +1,11 @@
 # Map OBJ Material 
 
 This utility maps materials from a source `.obj` to a target `.obj`. Only 
-vertices `v`, faces `f`, and `usemtl` lines are read and written.  
+vertices `v`, faces `f`, `usemtl`, and `mtllib` lines are read and written.  
+
+| Source | Target | Output |
+| - | - | - |
+| ![Tembusu L12](./img/Tembusu%20L12.png) | ![Tembusu L12 wrap](./img/Tembusu%20L12%20wrap.png) | ![Tembusu L12 materials](./img/Tembusu%20L12%20materials.png) |
 
 ## Installation  
 
@@ -25,17 +29,16 @@ vertices `v`, faces `f`, and `usemtl` lines are read and written.
 3. Run the program:  
 
     ```bash
-    ./build-linux/map_obj_mtl ./data/Ifc4_SampleHouse.obj ./data/Ifc4_SampleHouse_0.500000_0.001000_-1.000000.obj ./data/Ifc4_SampleHouse_materials.obj
+    ./build-linux/map_obj_mtl ./data/Tembusu\ L12.obj ./data/Tembusu\ L12\ wrap.obj ./data/Tembusu\ L12\ materials.obj
     ```
 
 4. Have the output reference the correct material file. Assuming the above 
-command was executed, this can be done in two ways:  
-    
-    1. Add the line `mtllib Ifc4_SampleHouse.mtl` to 
-    the start of the output file  
-    2. Copy or rename the source material file by running  
+command was executed, the output file should already correctly reference the
+existing material file. Otherwise, make a copy of the source material file and
+rename it:  
+     
     ```bash
-    cp ./data/Ifc4_SampleHouse.mtl ./data/Ifc4_SampleHouse_materials.mtl
+    cp ./data/Tembusu\ L12.mtl ./data/Tembusu\ L12\ materials.mtl
     ```
 
 ## Arguments  

@@ -22,7 +22,8 @@ std::vector<std::string> split(const std::string &input, const char &delim) {
 bool read_obj_vertices_faces_materials_3(
     const std::string &fname, std::vector<Vector_3<double>> &points,
     std::vector<std::vector<size_t>> &faces,
-    std::vector<std::string> &materials) {
+    std::vector<std::string> &materials,
+    std::vector<std::string> &material_files) {
     std::filesystem::path fpath = std::filesystem::path(fname);
     std::string extension = fpath.extension().string();
     if (extension != ".obj") {
@@ -33,6 +34,7 @@ bool read_obj_vertices_faces_materials_3(
     points.clear();
     faces.clear();
     materials.clear();
+    material_files.clear();
 
     std::ifstream file = std::ifstream(fpath);
     std::string material = "";
@@ -75,6 +77,14 @@ bool read_obj_vertices_faces_materials_3(
             std::string from_first_space = line.substr(first_space);
             size_t first_not_space = from_first_space.find_first_not_of(' ');
             material = from_first_space.substr(first_not_space);
+        } else if (parts[0] == "mtllib") {
+            if (parts.size() <= 1) {
+                continue;
+            }
+            size_t first_space = line.find_first_of(' ');
+            std::string from_first_space = line.substr(first_space);
+            size_t first_not_space = from_first_space.find_first_not_of(' ');
+            material_files.push_back(from_first_space.substr(first_not_space));
         }
     }
     file.close();

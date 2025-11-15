@@ -33,33 +33,14 @@ int main(int argc, char **argv) {
     std::string target = argv[2];
     std::string out = argv[3] ? argv[3] : "";
 
-    // static struct option long_options[] = {{"out", required_argument, 0,
-    // 'o'},
-    //                                        {0, 0, 0, 0}};
-    // optind = 3;
-    // int option_index = 0;
-    // for (int i = 0; i < 1000; ++i) {
-    //     int opt = getopt_long(argc, argv, "o:", long_options, &option_index);
-    //     if (opt == -1) {
-    //         break;
-    //     }
-    //     switch (opt) {
-    //     case 'o': {
-    //         out = optarg;
-    //     }
-    //     default: {
-    //         std::cerr << "?? getopt returned character code " << opt << "??"
-    //                   << std::endl;
-    //     }
-    //     }
-    // }
-
     std::vector<Vector_3<double>> vector_3s;
     std::vector<std::vector<size_t>> source_faces;
     std::vector<std::string> source_materials;
+    std::vector<std::string> material_files;
     if (!read_obj_vertices_faces_materials_3::
             read_obj_vertices_faces_materials_3(source, vector_3s, source_faces,
-                                                source_materials) ||
+                                                source_materials,
+                                                material_files) ||
         source_faces.empty()) {
         std::cerr << "Invalid source input: " << source << std::endl;
         return EXIT_FAILURE;
@@ -189,8 +170,9 @@ int main(int argc, char **argv) {
     std::cout << "Writing to " << out << "..." << std::endl;
     if (!write_obj_vertices_faces_materials_3::
             write_obj_vertices_faces_materials_3(out, out_points, target_faces,
-                                                 target_materials)) {
-        std::cerr << "Could not write!" << std::endl;
+                                                 target_materials,
+                                                 material_files)) {
+        std::cerr << "Could not write " << out << "!" << std::endl;
     }
 
     return 0;

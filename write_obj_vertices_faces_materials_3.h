@@ -9,7 +9,8 @@ namespace write_obj_vertices_faces_materials_3 {
 bool write_obj_vertices_faces_materials_3(
     const std::string &fname, std::vector<Vector_3<double>> &points,
     std::vector<std::vector<size_t>> &faces,
-    std::vector<std::string> &materials) {
+    std::vector<std::string> &materials,
+    std::vector<std::string> &material_files) {
     std::map<std::string, std::vector<std::vector<size_t>>> material_faces_map;
     for (int i = 0; i < std::min(faces.size(), materials.size()); ++i) {
         std::vector<size_t> face = faces[i];
@@ -24,6 +25,10 @@ bool write_obj_vertices_faces_materials_3(
 
     std::filesystem::path fpath = std::filesystem::path(fname);
     std::ofstream file = std::ofstream(fpath);
+
+    for (std::string material_file : material_files) {
+        file << "mtllib " << material_file << "\n";
+    }
 
     for (Vector_3<double> point : points) {
         file << "v " << std::to_string(point.x) << " "
