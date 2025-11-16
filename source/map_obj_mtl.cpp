@@ -10,9 +10,9 @@
 #include <CGAL/Triangulation_vertex_base_with_info_3.h>
 #include <CGAL/barycenter.h>
 
-#include "Vector_3.h"
-#include "read_obj_vertices_faces_materials_3.h"
-#include "write_obj_vertices_faces_materials_3.h"
+#include "source/Vector_3.h"
+#include "source/read_obj_vertices_faces_materials_3.h"
+#include "source/write_obj_vertices_faces_materials_3.h"
 
 using K = CGAL::Exact_predicates_inexact_constructions_kernel;
 using Point_3 = K::Point_3;

@@ -23,7 +23,7 @@ vertices `v`, faces `f`, `usemtl`, and `mtllib` lines are read and written.
 
     ```bash
     cmake -S . -B ./build-linux
-    make -C ./build-linux
+    cmake --build ./build-linux
     ```
 
 3. Run the program:  
